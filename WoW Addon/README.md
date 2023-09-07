@@ -1,2 +1,6 @@
-# WCL2WOW
-JQuery Script to parse Warcraft Logs Damage Done with WoW Addon to quickly send the table into a Chat channel. 
+# WoW Ingame Addon
+
+Usage
+/pastetochat to open frame. 
+Click on frame and paste clipboard contents in. 
+Press Send to Channel multiple times. 

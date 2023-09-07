@@ -1,0 +1,7 @@
+## Interface: 10017
+## Title: PasteToChat
+## Author: Jabberie
+## Version: 1.0
+## Notes: A simple addon to paste clipboard content line by line into chat.
+
+PasteToChat.lua

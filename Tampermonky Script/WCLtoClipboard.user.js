@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WCLtoClipboard
 // @namespace    jabberie
-// @version      1.0
+// @version      1.1
 // @description  Capture table headers and contents and copy them to the clipboard on Warcraft Logs
 // @author       jabberie
 // @match        https://www.warcraftlogs.com/*
@@ -11,36 +11,62 @@
 (function() {
     'use strict';
 
-    function createTable(headers, data) {
-        console.log(headers);
-        var table = headers[0] + ' | Percentage | ' + headers[1] + ' | ' + headers[2]  + ' | \n';
-        for (var i = 0; i < data.length; i++) {
-            var rowData = [];
-            for (var j = 0; j < headers.length-1; j++) {
-                console.log("i= " + i + " j= " + j + " data= " + data[i][j]);
-                if (j === 0) {
-                    rowData.push(data[i][j]);
-                } else if (j === 1) {
-                    var values = data[i][j].split(/\$|%|m/).filter(Boolean);
-                    console.log(values);
-                    rowData.push(values[1] + '% | ' + values[2] + 'm ');
-                } else {
-                    var values = data[i][j].split(/\$|%|m/).filter(Boolean);
-                    console.log(values);
-                    if (values.length > 1) {
-                        rowData.push(values[0] + ' | ' + values[1]);
-                    } else {
-                        rowData.push(values[0]);
-                    }
-                }
+    function formatNumber(number) {
+        if (number >= 1000) {
+            var suffixes = ["", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+            var suffixIndex = 0;
+
+            while (number >= 1000 && suffixIndex < suffixes.length - 1) {
+                number /= 1000;
+                suffixIndex++;
             }
-            table += rowData.join(' | ');
-            table += ' | \n';
+
+            return number.toFixed(1) + suffixes[suffixIndex];
         }
 
-        // Add a final line to the clipboard table
-        table += 'Data from Warcraft Logs';
+        return number.toString();
+    }
 
+
+    function createTable(headers, data) {
+        console.log(headers);
+        var instance = $("#filter-fight-boss-text").text();
+        var table = "WCL Details from " + instance +"\n";
+
+
+
+   //     var table = headers[0] + ' | Percentage | ' + headers[1] + ' | ' + headers[2]  + ' | \n';
+        for (var i = 0; i < data.length; i++) {
+            var rowData = [];
+            for (var j = 0; j < headers.length-2; j++) {
+                if (j === 0) {
+                    var name = i+1 + ". " + data[i][j];
+                    if (name.length < 25) {
+                        // Calculate the number of spaces needed to pad the string
+                        var spacesToAdd = 25 - name.length;
+                        name += " ";
+                        // Pad the string with spaces using a loop
+                        for (var k = 0; k < spacesToAdd; k++) {
+                            name += ".";
+                        }
+                        name += " ";
+                    }
+                    rowData.push(name);
+                } else {
+                    var values = data[i][j].split(/\$|%|m/).filter(Boolean);
+                    var values2 = data[i][j+1].split(/\$|%|m/).filter(Boolean);
+
+                    var dpsvalue = values2[0].replace(/,/g, '');
+                    console.log(dpsvalue)
+                    dpsvalue = formatNumber(dpsvalue);
+
+                    rowData.push(values[2] + 'M (' + dpsvalue + ", " + values[1] + '%)')
+                    // rowData.push(values[1] + '% | ' + values[2] + 'M ');
+                }
+            }
+            table += rowData.join('');
+            table += '\n';
+        }
         return table;
     }
 

@@ -1,2 +1,7 @@
-# WCL2WOW
-JQuery Script to parse Warcraft Logs Damage Done with WoW Addon to quickly send the table into a Chat channel. 
+# WCL Tampermonkey Script
+## Usage
+1. install Tampermonkey
+1. Install WCL2Clipboard
+1. Open up a WCL report 
+1. Click the Copy Damage Done button
+

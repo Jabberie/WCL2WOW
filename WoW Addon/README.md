@@ -1,6 +1,6 @@
 # WoW Ingame Addon
 
-Usage
-/pastetochat to open frame. 
-Click on frame and paste clipboard contents in. 
-Press Send to Channel multiple times. 
+## Usage
+1. /pastetochat to open frame. 
+1. Click on frame and paste clipboard contents in. 
+1. Press Send to Channel multiple times. 
